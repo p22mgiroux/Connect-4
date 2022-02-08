@@ -6,6 +6,10 @@ pygame.init()
 
 width, height = 840, 840
 screen = pygame.display.set_mode((width, height))
+smallfont = pygame.font.SysFont('Corbel',200)
+title_text = smallfont.render('Connect 4' , True , (0,0,0))
+smallfont = pygame.font.SysFont('Corbel',50)
+button_text = smallfont.render('Start Game' , True , (0,0,0))
 
 board = [
     [0,0,0,0,0,0,0],
@@ -137,17 +141,34 @@ def display_board(surface, board):
             pygame.draw.circle(surface, color1, (n * 120 + 60, i * 120 + 180), 25)
 
 
+def start_screen():
+    screen.fill((255,255,255))
+    if width/2 - 100 <= mouse[0] <= width/2 + 100 and height/2 - 50 <= mouse[1] <= height/2 + 50:
+        pygame.draw.rect(screen,(170,170,170),[width/2 - 100,height/2 - 50,200,100])
+          
+    else:
+        pygame.draw.rect(screen,(100,100,100),[width/2 - 100,height/2 - 50,200,100])
+    screen.blit(title_text , (67,67))
+    screen.blit(button_text , (width/2 - 93,height/2 - 20))
+
+
 def print_board():
     for x in range(6):
         print(board[x])
 
 print_board()
 pos = [4]
+moving = [0]
 
-while True:
-    screen.fill((255,255,255))
+while True:           
+    mouse = pygame.mouse.get_pos()
+
+    screen.fill((255,255,255))  
     display_board(screen,board)
     display_chip(screen, team, pos[0])
+
+    if moving[0] == 0:
+        start_screen()
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -155,15 +176,23 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                if pos[0] < 7:
-                    pos[0] += 1
-                    print(pos)
+                if moving[0] == 1:
+                    if pos[0] < 7:
+                        pos[0] += 1
+                        print(pos)
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                if pos[0] > 1:
-                    pos[0] -= 1
-                    print(pos)
+                if moving[0] == 1:
+                    if pos[0] > 1:
+                        pos[0] -= 1
+                        print(pos)
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                play(board, pos[0], team)
-                check_for_win()
+                if moving[0] == 1:
+                    play(board, pos[0], team)
+                    check_for_win()
+            if event.key == event.key == pygame.K_q:
+                moving[0] = 1
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if width/2 - 100 <= mouse[0] <= width/2 + 100 and height/2 - 50 <= mouse[1] <= height/2 + 50:
+                moving[0] = 1
 
     pygame.display.flip()
