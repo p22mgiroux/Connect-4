@@ -6,10 +6,22 @@ pygame.init()
 
 width, height = 840, 840
 screen = pygame.display.set_mode((width, height))
-smallfont = pygame.font.SysFont('Corbel',200)
-title_text = smallfont.render('Connect 4' , True , (0,0,0))
 smallfont = pygame.font.SysFont('Corbel',50)
 button_text = smallfont.render('Start Game' , True , (0,0,0))
+smallfont = pygame.font.SysFont('Corbel', 50)
+instructions1 = smallfont.render('Connect four of your checkers in a row', True, (0,0,0))
+instructions2 = smallfont.render('while preventing your opponent from doing', True, (0,0,0))
+instructions3 = smallfont.render('the same. But, look out – your opponent', True, (0,0,0))
+instructions4 = smallfont.render('can sneak up on you and win the game!', True, (0,0,0))
+
+logo = pygame.image.load(r'Connect 4/Connect-4/connect4logo.png')
+yellow = pygame.image.load(r'Connect 4/Connect-4/connect4yellow.png')
+red = pygame.image.load(r'Connect 4/Connect-4/connect4red.png')
+shadow = pygame.image.load(r'Connect 4/Connect-4/connect4shadow.png')
+logo = pygame.transform.scale(logo, (840, 258))
+yellow = pygame.transform.scale(yellow, (350, 200))
+red = pygame.transform.scale(red, (350, 200))
+shadow = pygame.transform.scale(shadow, (360, 210))
 
 board = [
     [0,0,0,0,0,0,0],
@@ -143,13 +155,20 @@ def display_board(surface, board):
 
 def start_screen():
     screen.fill((255,255,255))
-    if width/2 - 100 <= mouse[0] <= width/2 + 100 and height/2 - 50 <= mouse[1] <= height/2 + 50:
-        pygame.draw.rect(screen,(170,170,170),[width/2 - 100,height/2 - 50,200,100])
-          
-    else:
-        pygame.draw.rect(screen,(100,100,100),[width/2 - 100,height/2 - 50,200,100])
-    screen.blit(title_text , (67,67))
-    screen.blit(button_text , (width/2 - 93,height/2 - 20))
+
+    if 50 <= mouse[0] <= 400 and 500 <= mouse[1] <= 700:
+        screen.blit(shadow, (45,495))
+
+    if 440 <= mouse[0] <= 750 and 500 <= mouse[1] <= 700:
+        screen.blit(shadow, (435,495))
+
+    screen.blit(logo, (0,0))
+    screen.blit(yellow, (50,500))
+    screen.blit(red, (440,500))
+    screen.blit(instructions1 , (420 - instructions1.get_rect()[2] // 2,250))
+    screen.blit(instructions2 , (420 - instructions2.get_rect()[2] // 2,300))
+    screen.blit(instructions3 , (420 - instructions3.get_rect()[2] // 2,350))
+    screen.blit(instructions4 , (420 - instructions4.get_rect()[2] // 2,400))
 
 
 def print_board():
@@ -192,7 +211,12 @@ while True:
             if event.key == event.key == pygame.K_q:
                 moving[0] = 1
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if width/2 - 100 <= mouse[0] <= width/2 + 100 and height/2 - 50 <= mouse[1] <= height/2 + 50:
+            if 50 <= mouse[0] <= 400 and 500 <= mouse[1] <= 700:
+                team[0] = 1
+                moving[0] = 1
+
+            if 440 <= mouse[0] <= 750 and 500 <= mouse[1] <= 700:
+                team[0] = -1
                 moving[0] = 1
 
     pygame.display.flip()
