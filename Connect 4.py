@@ -6,22 +6,26 @@ pygame.init()
 
 width, height = 840, 840
 screen = pygame.display.set_mode((width, height))
-smallfont = pygame.font.SysFont('Corbel',50)
-button_text = smallfont.render('Start Game' , True , (0,0,0))
-smallfont = pygame.font.SysFont('Corbel', 50)
+smallfont = pygame.font.SysFont('Corbel', 40)
 instructions1 = smallfont.render('Connect four of your checkers in a row', True, (0,0,0))
 instructions2 = smallfont.render('while preventing your opponent from doing', True, (0,0,0))
-instructions3 = smallfont.render('the same. But, look out – your opponent', True, (0,0,0))
+instructions3 = smallfont.render('the same. But, look out - your opponent', True, (0,0,0))
 instructions4 = smallfont.render('can sneak up on you and win the game!', True, (0,0,0))
+smallfont = pygame.font.SysFont('Corbel', 70)
+start_text = smallfont.render('Which Color Starts?', True, (0,0,0))
+smallfont = pygame.font.SysFont('Corbel', 120)
+yellow_wins = smallfont.render('Yellow Wins!', True, (255,220,0))
+red_wins = smallfont.render('Red Wins!', True, (220,0,0))
 
-logo = pygame.image.load(r'Connect 4/Connect-4/connect4logo.png')
-yellow = pygame.image.load(r'Connect 4/Connect-4/connect4yellow.png')
-red = pygame.image.load(r'Connect 4/Connect-4/connect4red.png')
-shadow = pygame.image.load(r'Connect 4/Connect-4/connect4shadow.png')
+logo = pygame.image.load(r'connect4logo.png')
+yellow = pygame.image.load(r'connect4yellow.png')
+red = pygame.image.load(r'connect4red.png')
+shadow = pygame.image.load(r'connect4shadow.png')
 logo = pygame.transform.scale(logo, (840, 258))
 yellow = pygame.transform.scale(yellow, (350, 200))
 red = pygame.transform.scale(red, (350, 200))
 shadow = pygame.transform.scale(shadow, (360, 210))
+
 
 board = [
     [0,0,0,0,0,0,0],
@@ -32,12 +36,12 @@ board = [
     [0,0,0,0,0,0,0]
 ]
 
-team = [1]
+team = [0]
 
-def play(board, slot, team):
+def play(slot, side):
     for x in range(6):
         if board[5 - x][slot - 1] == 0:
-            board[5 - x][slot - 1] = team[0]
+            board[5 - x][slot - 1] = side
             team[0] *= -1
             print_board()
             pos[0] = 4
@@ -76,7 +80,7 @@ def check_for_win():
     return win
 
 
-def display_chip(surface, team, pos):
+def display_chip(surface, pos):
     if team[0] == 1:
         color1 = (255,220,0)
         color2 = (220,190,0)
@@ -112,7 +116,7 @@ def display_chip(surface, team, pos):
         
 
 def display_board(surface, board):
-    pygame.draw.rect(surface, (0,0,255), (0,120,840,840))
+    pygame.draw.rect(surface, (0,0,255), (0,120,840,720))
     for i, x in enumerate(board):
         for n, val in enumerate(x):
             pygame.draw.circle(surface, (0,100,255), (n * 120 + 60, i * 120 + 180), 55)
@@ -156,19 +160,20 @@ def display_board(surface, board):
 def start_screen():
     screen.fill((255,255,255))
 
-    if 50 <= mouse[0] <= 400 and 500 <= mouse[1] <= 700:
-        screen.blit(shadow, (45,495))
+    if 50 <= mouse[0] <= 400 and 590 <= mouse[1] <= 790:
+        screen.blit(shadow, (45,585))
 
-    if 440 <= mouse[0] <= 750 and 500 <= mouse[1] <= 700:
-        screen.blit(shadow, (435,495))
+    if 440 <= mouse[0] <= 750 and 590 <= mouse[1] <= 790:
+        screen.blit(shadow, (435,585))
 
     screen.blit(logo, (0,0))
-    screen.blit(yellow, (50,500))
-    screen.blit(red, (440,500))
-    screen.blit(instructions1 , (420 - instructions1.get_rect()[2] // 2,250))
+    screen.blit(yellow, (50,590))
+    screen.blit(red, (440,590))
+    screen.blit(instructions1 , (420 - instructions1.get_rect()[2] // 2, 250))
     screen.blit(instructions2 , (420 - instructions2.get_rect()[2] // 2,300))
-    screen.blit(instructions3 , (420 - instructions3.get_rect()[2] // 2,350))
-    screen.blit(instructions4 , (420 - instructions4.get_rect()[2] // 2,400))
+    screen.blit(instructions3 , (420 - instructions3.get_rect()[2] // 2, 350))
+    screen.blit(instructions4 , (420 - instructions4.get_rect()[2] // 2, 400))
+    screen.blit(start_text, (420 - start_text.get_rect()[2] // 2, 500))
 
 
 def print_board():
@@ -184,7 +189,17 @@ while True:
 
     screen.fill((255,255,255))  
     display_board(screen,board)
-    display_chip(screen, team, pos[0])
+    if moving[0] == 1:
+        display_chip(screen, pos[0])
+
+    if check_for_win() != 0:
+        if check_for_win() == 1:
+            screen.blit(yellow_wins, (420 - yellow_wins.get_rect()[2] // 2, 10))
+        if check_for_win() == -1:
+            screen.blit(red_wins, (420 - red_wins.get_rect()[2] // 2, 10))
+        display_chip(screen, 1)
+        display_chip(screen, 7)
+        moving[0] = 2
 
     if moving[0] == 0:
         start_screen()
@@ -206,17 +221,18 @@ while True:
                         print(pos)
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 if moving[0] == 1:
-                    play(board, pos[0], team)
+                    play(pos[0], team[0])
                     check_for_win()
             if event.key == event.key == pygame.K_q:
                 moving[0] = 1
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if 50 <= mouse[0] <= 400 and 500 <= mouse[1] <= 700:
-                team[0] = 1
-                moving[0] = 1
+        if event.type == pygame.MOUSEBUTTONUP:
+            if moving[0] == 0:
+                if 50 <= mouse[0] <= 400 and 590 <= mouse[1] <= 790:
+                    team[0] = 1
+                    moving[0] = 1
 
-            if 440 <= mouse[0] <= 750 and 500 <= mouse[1] <= 700:
-                team[0] = -1
-                moving[0] = 1
+                if 440 <= mouse[0] <= 750 and 590 <= mouse[1] <= 790:
+                    team[0] = -1
+                    moving[0] = 1
 
     pygame.display.flip()
