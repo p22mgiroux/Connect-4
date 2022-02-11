@@ -35,6 +35,12 @@ red = pygame.transform.scale(red, (350, 200))
 shadow = pygame.image.load(r'connect4shadow.png')
 shadow = pygame.transform.scale(shadow, (360, 210))
 
+state = [0]
+team = [1]
+pos = [4]
+scorey = [0]
+scorer = [0]
+
 board = [
     [0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0],
@@ -48,6 +54,7 @@ def clear_board():
     for x in range(6):
         for y in range(7):
             board[x][y] = 0
+
 
 def play(slot, team):
     for x in range(6):
@@ -182,12 +189,6 @@ def start_screen():
     screen.blit(instructions4 , (420 - instructions4.get_rect()[2] // 2, 400))
     screen.blit(start_text, (420 - start_text.get_rect()[2] // 2, 500))
 
-    
-state = [0]
-team = [1]
-pos = [4]
-scorey = [0]
-scorer = [0]
 
 while True:
     mouse = pygame.mouse.get_pos()
