@@ -19,6 +19,7 @@ start_text = smallfont.render('Which Color Starts?', True, (0,0,0))
 smallfont = pygame.font.SysFont('Corbel', 120)
 yellow_wins = smallfont.render('Yellow Wins!', True, (255,220,0))
 red_wins = smallfont.render('Red Wins!', True, (220,0,0))
+tie = smallfont.render('Tie!', True, (0,0,0))
 
 smallfont = pygame.font.SysFont('Corbel', 30)
 again1y = smallfont.render('Play', True, (0,0,0))
@@ -144,6 +145,11 @@ def check_for_win():
         for y in range(7-3):
             if board[x][y] == board[x-1][y+1] == board[x-2][y+2] == board[x-3][y+3] and board[x][y] != 0:
                 win = board[x][y]
+    # Filled Board Check
+    empty_spaces = len([x for y in board for x in y if x == 0])
+    if empty_spaces == 0:
+        return -2
+    
     return win
 
 
@@ -206,6 +212,8 @@ while True:
             screen.blit(yellow_wins, (420 - yellow_wins.get_rect()[2] // 2, 10))
         if check_for_win() == -1:
             screen.blit(red_wins, (420 - red_wins.get_rect()[2] // 2, 10))
+        if check_for_win() == -2:
+            screen.blit(tie, (420 - tie.get_rect()[2] // 2, 10))
 
         if (((mouse[0] - 60) ** 2) + ((mouse[1] - 60) ** 2)) ** .5 <= 50:
             pygame.draw.circle(screen, (0,0,0), (60,60), 52)
