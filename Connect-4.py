@@ -26,29 +26,22 @@ again2y = smallfont.render('again?', True, (0,0,0))
 again1r = smallfont.render('Play', True, (255,255,255))
 again2r = smallfont.render('again?', True, (255,255,255))
 
-logo = pygame.image.load(r'connect4logo.png')
+logo = pygame.image.load('connect4logo.png')
 logo = pygame.transform.scale(logo, (840, 258))
-yellow = pygame.image.load(r'connect4yellow.png')
+yellow = pygame.image.load('connect4yellow.png')
 yellow = pygame.transform.scale(yellow, (350, 200))
-red = pygame.image.load(r'connect4red.png')
+red = pygame.image.load('connect4red.png')
 red = pygame.transform.scale(red, (350, 200))
-shadow = pygame.image.load(r'connect4shadow.png')
+shadow = pygame.image.load('connect4shadow.png')
 shadow = pygame.transform.scale(shadow, (360, 210))
 
 state = [0]
 team = [1]
 pos = [4]
-scorey = [0]
-scorer = [0]
+score_y = [0]
+score_r = [0]
 
-board = [
-    [0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0]
-]
+board = [[0 for x in range(7)] for x in range(6)]
 
 def clear_board():
     for x in range(6):
@@ -221,15 +214,15 @@ while True:
         draw_chip(60, 60, 1)
         draw_chip(780, 60, -1)
 
-        if scorey[0] + scorer[0] <= 1:
+        if score_y[0] + score_r[0] <= 1:
             screen.blit(again1y, (60 - again1y.get_rect()[2] // 2, 35))
             screen.blit(again2y, (60 - again2y.get_rect()[2] // 2, 55))
             screen.blit(again1r, (780 - again1r.get_rect()[2] // 2, 35))
             screen.blit(again2r, (780 - again2r.get_rect()[2] // 2, 55))
         else:
             smallfont = pygame.font.SysFont('Corbel', 50)
-            yellow_score = smallfont.render('{}'.format(scorey[0]), True, (0,0,0))
-            red_score = smallfont.render('{}'.format(scorer[0]), True, (255,255,255))
+            yellow_score = smallfont.render('{}'.format(score_y[0]), True, (0,0,0))
+            red_score = smallfont.render('{}'.format(score_r[0]), True, (255,255,255))
             screen.blit(yellow_score, (60 - yellow_score.get_rect()[2] // 2, 60 - yellow_score.get_rect()[3] // 2))
             screen.blit(red_score, (780 - red_score.get_rect()[2] // 2, 60 - red_score.get_rect()[3] // 2))
         state[0] = 2
@@ -251,9 +244,9 @@ while True:
                             drop(pos[0], team[0])
                             play(pos[0], team)
                             if check_for_win() == 1:
-                                scorey[0] += 1
+                                score_y[0] += 1
                             if check_for_win() == -1:
-                                scorer[0] += 1 
+                                score_r[0] += 1 
         if event.type == pygame.MOUSEBUTTONUP:
             if state[0] == 0:
                 if 50 <= mouse[0] <= 400 and 590 <= mouse[1] <= 790:
