@@ -170,7 +170,7 @@ def start_screen():
 
     if 50 <= mouse[0] <= 400 and 590 <= mouse[1] <= 790:
         screen.blit(shadow, (45,585))
-    if 440 <= mouse[0] <= 750 and 590 <= mouse[1] <= 790:
+    if 440 <= mouse[0] <= 790 and 590 <= mouse[1] <= 790:
         screen.blit(shadow, (435,585))
 
     screen.blit(logo, (0,0))
@@ -252,7 +252,7 @@ while True:
                 if 50 <= mouse[0] <= 400 and 590 <= mouse[1] <= 790:
                     team[0] = 1
                     state[0] = 1
-                if 440 <= mouse[0] <= 750 and 590 <= mouse[1] <= 790:
+                if 440 <= mouse[0] <= 790 and 590 <= mouse[1] <= 790:
                     team[0] = -1
                     state[0] = 1
             if state[0] == 2:
