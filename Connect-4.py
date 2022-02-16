@@ -41,6 +41,7 @@ team = [1]
 pos = [4]
 score_y = [0]
 score_r = [0]
+first_game = [1]
 
 board = [[0 for x in range(7)] for x in range(6)]
 
@@ -48,6 +49,7 @@ def clear_board():
     for x in range(6):
         for y in range(7):
             board[x][y] = 0
+    first_game[0] = 0
 
 
 def play(slot, team):
@@ -213,7 +215,7 @@ while True:
         if check_for_win() == -1:
             screen.blit(red_wins, (420 - red_wins.get_rect()[2] // 2, 10))
         if check_for_win() == -2:
-            screen.blit(tie, (420 - tie.get_rect()[2] // 2, 10))
+            screen.blit(tie, (420 - tie.get_rect()[2] // 2, 13))
 
         if (((mouse[0] - 60) ** 2) + ((mouse[1] - 60) ** 2)) ** .5 <= 50:
             pygame.draw.circle(screen, (0,0,0), (60,60), 52)
@@ -222,7 +224,7 @@ while True:
         draw_chip(60, 60, 1)
         draw_chip(780, 60, -1)
 
-        if score_y[0] + score_r[0] <= 1:
+        if first_game[0] == 1:
             screen.blit(again1y, (60 - again1y.get_rect()[2] // 2, 35))
             screen.blit(again2y, (60 - again2y.get_rect()[2] // 2, 55))
             screen.blit(again1r, (780 - again1r.get_rect()[2] // 2, 35))
