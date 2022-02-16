@@ -176,9 +176,9 @@ def draw_board():
 def start_screen():
     screen.fill((255,255,255))
 
-    if 50 <= mouse[0] <= 400 and 590 <= mouse[1] <= 790:
+    if (((mouse[0] - 150) ** 2) + ((mouse[1] - 690) ** 2)) ** .5 <= 100 or (((mouse[0] - 300) ** 2) + ((mouse[1] - 690) ** 2)) ** .5 <= 100 or 150 <= mouse[0] <= 300 and 590 <= mouse[1] <= 790:
         screen.blit(shadow, (45,585))
-    if 440 <= mouse[0] <= 790 and 590 <= mouse[1] <= 790:
+    if (((mouse[0] - 540) ** 2) + ((mouse[1] - 690) ** 2)) ** .5 <= 100 or (((mouse[0] - 690) ** 2) + ((mouse[1] - 690) ** 2)) ** .5 <= 100 or 540 <= mouse[0] <= 690 and 590 <= mouse[1] <= 790:
         screen.blit(shadow, (435,585))
 
     screen.blit(logo, (0,0))
@@ -258,11 +258,12 @@ while True:
                             if check_for_win() == -1:
                                 score_r[0] += 1 
         if event.type == pygame.MOUSEBUTTONUP:
+            print(mouse)
             if state[0] == 0:
-                if 50 <= mouse[0] <= 400 and 590 <= mouse[1] <= 790:
+                if (((mouse[0] - 150) ** 2) + ((mouse[1] - 690) ** 2)) ** .5 <= 100 or (((mouse[0] - 300) ** 2) + ((mouse[1] - 690) ** 2)) ** .5 <= 100 or 150 <= mouse[0] <= 300 and 590 <= mouse[1] <= 790:
                     team[0] = 1
                     state[0] = 1
-                if 440 <= mouse[0] <= 790 and 590 <= mouse[1] <= 790:
+                if (((mouse[0] - 540) ** 2) + ((mouse[1] - 690) ** 2)) ** .5 <= 100 or (((mouse[0] - 690) ** 2) + ((mouse[1] - 690) ** 2)) ** .5 <= 100 or 540 <= mouse[0] <= 690 and 590 <= mouse[1] <= 790:
                     team[0] = -1
                     state[0] = 1
             if state[0] == 2:
